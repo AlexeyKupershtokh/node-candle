@@ -1,0 +1,25 @@
+{
+  "name": "candle",
+  "version": "0.1.0",
+  "description": "A module for weak referenced callbacks with timeouts.",
+  "main": "candle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AlexeyKupershtokh/node-candle.git"
+  },
+  "keywords": [
+    "callback",
+    "flow-control",
+    "timer",
+    "timeout",
+    "weak"
+  ],
+  "devDependencies": {
+    "benchmark": ">0"
+  },
+  "author": "Alexey Kupershtokh",
+  "license": "BSD"
+}
