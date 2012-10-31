@@ -17,6 +17,9 @@
     "timeout",
     "weak"
   ],
+  "dependencies": {
+    "debug":"*"
+  },
   "devDependencies": {
     "benchmark": ">0"
   },
