@@ -1,6 +1,6 @@
 {
   "name": "candle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A module for weak referenced callbacks with timeouts.",
   "main": "candle.js",
   "scripts": {
