@@ -1,7 +1,10 @@
 node-candle
 ===========
 
-A node.js module for weak referenced callbacks with timeouts. 
+node-candle is a node.js module that brings a callback broker to your application. It's inspired by socket.io <a href="https://github.com/learnboost/socket.io/#getting-acknowledgements">acknowledgements</a>.
+ * it assigns ids to callbacks. This allows to create request-response mechanism over any network module easily.
+ * it can add timeouts to callbacks.
+ * it makes callbacks weakly referenced. And after a callback is resolved or timed out it becomes free and is destroyed during next garbage collection. This feature aims to let you create leak-free applications. This feature is the contrary to <a href="https://github.com/temsa/addTimeout">addTimeout</a> and <a href="https://github.com/coolaj86/futures/tree/v2.0/future">future</a> and which can keep callbacks from deletion.
 
 ![](https://github.com/AlexeyKupershtokh/node-candle/raw/master/assets/candle.png)
 
@@ -11,29 +14,23 @@ A simple example
 ```javascript
 var candle = require('candle').candle;
 
-var c = new candle(), id;
+// Create a new candle, usually you will need only one since it can handle many callbacks.
+var c = new candle();
 
-id = c.add(function(err, result) { console.log('cb1', err, result); }, 100);
-// this will fire at 50ms and output "cb1 null result1.1"
-setTimeout(c.resolve.bind(c, id, null, 'result1.1'), 50);
-// will fire at 60ms but will not activate the callback since it will have been fred by this time.
-setTimeout(c.resolve.bind(c, id, null, 'result1.2'), 60); 
+// Add a callback to it
+var id = c.add(function(err, response) { console.log('callback fired,', response); })
 
-id = c.add(function(err, result) { console.log('cb2', err, result); }, 100);
-// this will fire at 150ms, but the callback will have been activated by timeout and output "cb2 timeout undefined"
-setTimeout(c.resolve.bind(c, id, null, 'result2'), 150);
+// You can pass these ids over network and catch back along it with a response.
+// When you're ready just resolve the callback using these ids:
+c.resolve(id, null, 'whoa!');
 
-// This will fire by timeout and will output "cb3 timeout undefined"
-id = c.add(function(err, result) { console.log('cb3', err, result); }, 100);
+// output: "callback fired, whoa!"
 ```
 
 A network example
 =================
 
-The main point of this project comparing to the <a href="https://github.com/coolaj86/futures/tree/v2.0/future">future</a> and <a href="https://github.com/temsa/addTimeout">addTimeout</a> is that the candle is more suitable for network applications.
-Consider the following use case:
-
-Server2 is known that it has unpredictable response time:
+Let's examine the following situation. We have 2 servers, Server1 and Server2, and we want to make some requests from Server1 to Server2 which is known that it has unpredictable response time:
 ```javascript
 socket.on('myrequest', function(payload, id) {
   // dont send anything at all about 'r3'
@@ -46,7 +43,7 @@ socket.on('myrequest', function(payload, id) {
   }, timeout);
 });
 ```
-Server1 want to send some requests to the Server2 and wait for at most 100ms.
+So we would like to send the requests to the Server2 and wait for responses for at most 100ms.
 ```javascript
 var candle = require('candle').candle;
 
@@ -59,9 +56,16 @@ socket.on('myresponse', function(id, response) {
 var doSmthWithRequest = function(err, request) {
   console.log('got', err, request, 'on', Date.now() - start, 'th ms');
 };
-socket.emit('myrequest', 'r1', c.add(doSmthWithRequest, 100));
-socket.emit('myrequest', 'r2', c.add(doSmthWithRequest, 100));
-socket.emit('myrequest', 'r3', c.add(doSmthWithRequest, 100));
+var id;
+id = c.add(doSmthWithRequest);
+c.setTimeout(id, 100);
+socket.emit('myrequest', 'r1', id);
+id = c.add(doSmthWithRequest);
+c.setTimeout(id, 100);
+socket.emit('myrequest', 'r2', id);
+id = c.add(doSmthWithRequest);
+c.setTimeout(id, 100);
+socket.emit('myrequest', 'r3', id);
 ```
 This code will likely output the following:
 ```
@@ -69,5 +73,5 @@ got null r1_response on 13 th ms
 got timeout undefined on 102 th ms
 got timeout undefined on 102 th ms
 ```
-Also candle destroys (unreferences) all callback after they have been resolved or timed out to free memory and avoid leaks.
+So we get the response and 2 timeouts right after 100ms passed.
 As far as the r2_response will be returned after timeout it will be completely ignored.
