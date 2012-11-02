@@ -26,7 +26,7 @@ c.resolve(id, null, 'whoa!');
 
 // output: "callback fired, whoa!"
 ```
-
+<a href="https://github.com/AlexeyKupershtokh/node-candle/tree/master/examples">more examples</a>
 A network example
 =================
 
