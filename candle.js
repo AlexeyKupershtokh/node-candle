@@ -3,48 +3,57 @@ var timers = require('./timers.js');
 
 var debug = require('debug')('candle');
 var candle = function() {
-    this.callbacks = {};
+    this.callbacks = Object.create(null);
+    this.timeouts = Object.create(null);
     this.id = 0;
 };
-candle.prototype.get_timeout = function(id) {
-    var self = this;
-    return function() { return self.timeout(id); };
-};
-candle.prototype.add = function(callback, timeout) {
+candle.prototype.add = function(callback) {
     var id = ++this.id;
-    debug('Added callback', 'id:', id, ', timeout:', timeout);
-    var timer = timers.setTimeout(this.get_timeout(id), timeout);
-    this.callbacks[id] = [callback, timer];
+    debug('add(...), assigned id = ' + id);
+    this.callbacks[id] = callback;
     return id;
 };
-candle.prototype.timeout = function(id) {
-    debug('Callback timed out', 'id:', id);
-    this.resolve(id, 'timeout');
-};
 candle.prototype.resolve = function(id, err, result) {
-    debug('Callback resolved', 'id:', id);
+    debug('resolve(' + id + ', ...)');
     var l = arguments.length;
-    var s = this.callbacks[id];
-    if (s) {
+    var callback = this.callbacks[id];
+    if (callback) {
         this.delete(id);
-        var c = s[0];
-        if (l == 1) c();
-        else if (l == 2) c(err);
-        else if (l == 3) c(err, result);
+        if (l == 1) callback();
+        else if (l == 2) callback(err);
+        else if (l == 3) callback(err, result);
         else {
             var args = new Array(l - 1);
             for (var i = 1; i < l; i++) args[i - 1] = arguments[i];
-            if (c) {
-                c.apply(this, args);
-            }
+            callback.apply(this, args);
         }
     }
 };
 candle.prototype.delete = function(id) {
-    if (this.callbacks[id] && this.callbacks[id][1]) {
-        timers.clearTimeout(this.callbacks[id][1]);
-    }
+    debug('delete(' + id + ')');
+    this.clearTimeout(id);
     delete this.callbacks[id];
+};
+candle.prototype.setTimeout = function(id, timeout) {
+    debug('setTimeout(' + id + ')');
+    if (!this.callbacks[id]) return;
+    this.clearTimeout(id);
+    this.timeouts[id] = timers.setTimeout(this.getTimeout(id), timeout);
+};
+candle.prototype.clearTimeout = function(id) {
+    debug('clearTimeout(' + id + ')');
+    if (this.timeouts[id]) {
+      timers.clearTimeout(this.timeouts[id]);
+    }
+    delete this.timeouts[id];
+};
+candle.prototype.getTimeout = function(id) {
+    var self = this;
+    return function() { return self.onTimeout(id); };
+};
+candle.prototype.onTimeout = function(id) {
+    debug('onTimeout(' + id + ')');
+    this.resolve(id, 'timeout');
 };
 
 module.exports.candle = candle;

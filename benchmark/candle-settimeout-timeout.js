@@ -1,21 +1,14 @@
-"use strict";
-
 var candle = require('..').candle;
 
 var c = new candle();
 
 var n = 0;
-
 var next = function() {
-    var ids = [], l = 10000;
-    for (var i = 0; i < l; i++) {
+    for (var i = 0; i < 3000; i++) {
         var id = c.add(function(err, result) {
             n++;
         }, 1);
-        ids.push(id);
-    }
-    for (var i = 0; i < l; i++) {
-        c.resolve(ids[i], null, 'result');
+        c.setTimeout(id, 1);
     }
     setTimeout(next, 1);
 };
@@ -32,3 +25,4 @@ setInterval(function() {
     last = Date.now();
     n = 0;
 }, 1000);
+

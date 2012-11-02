@@ -11,7 +11,8 @@ var next = function() {
     for (var i = 0; i < l; i++) {
         var id = c.add(function(err, result) {
             n++;
-        }, 1);
+        });
+        c.setTimeout(id, 1);
         ids.push(id);
     }
     for (var i = 0; i < l; i++) {
@@ -32,3 +33,4 @@ setInterval(function() {
     last = Date.now();
     n = 0;
 }, 1000);
+

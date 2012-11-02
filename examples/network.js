@@ -23,6 +23,13 @@ socket.on('myresponse', function(id, response) {
 var doSmthWithRequest = function(err, request) {
   console.log('got', err, request, 'on', Date.now() - start, 'th ms');
 };
-socket.emit('myrequest', 'r1', c.add(doSmthWithRequest, 100));
-socket.emit('myrequest', 'r2', c.add(doSmthWithRequest, 100));
-socket.emit('myrequest', 'r3', c.add(doSmthWithRequest, 100));
+var id;
+id = c.add(doSmthWithRequest);
+c.setTimeout(id, 100);
+socket.emit('myrequest', 'r1', id);
+id = c.add(doSmthWithRequest);
+c.setTimeout(id, 100);
+socket.emit('myrequest', 'r2', id);
+id = c.add(doSmthWithRequest);
+c.setTimeout(id, 100);
+socket.emit('myrequest', 'r3', id);
