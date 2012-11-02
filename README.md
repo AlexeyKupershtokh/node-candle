@@ -1,5 +1,6 @@
 node-candle
 ===========
+[![Build Status](https://travis-ci.org/AlexeyKupershtokh/node-candle.png)](https://travis-ci.org/AlexeyKupershtokh/node-candle)
 
 node-candle is a node.js module that brings a callback broker to your application. It's inspired by socket.io <a href="https://github.com/learnboost/socket.io/#getting-acknowledgements">acknowledgements</a>.
  * it assigns ids to callbacks. This allows to create request-response mechanism over any network module easily.
