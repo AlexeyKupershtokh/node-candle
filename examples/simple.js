@@ -1,12 +1,13 @@
 var candle = require('..').candle;
 
-var c = new candle(), id;
+// Create a new candle, usually you will need only one since it can handle many callbacks.
+var c = new candle();
 
-id = c.add(function(err, result) { console.log('cb1', err, result); });
-setTimeout(c.resolve.bind(c, id, null, 'result1.1'), 50);
-setTimeout(c.resolve.bind(c, id, null, 'result1.2'), 60);
+// Add a callback to it
+var id = c.add(function(err, response) { console.log('callback fired,', response); })
 
-id = c.add(function(err, result) { console.log('cb2', err, result); });
-setTimeout(c.resolve.bind(c, id, null, 'result2'), 150);
+// You can pass these ids over network and catch back along it with a response.
+// When you're ready just resolve the callback using these ids:
+c.resolve(id, null, 'whoa!');
 
-id = c.add(function(err, result) { console.log('cb3', err, result); });
+// output: "callback fired, whoa!"
