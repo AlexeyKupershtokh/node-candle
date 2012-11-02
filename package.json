@@ -1,6 +1,6 @@
 {
   "name": "candle",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A module for weak referenced callbacks with timeouts.",
   "main": "candle.js",
   "scripts": {
@@ -15,7 +15,8 @@
     "flow-control",
     "timer",
     "timeout",
-    "weak"
+    "weak",
+    "callback broker"
   ],
   "dependencies": {
     "debug":"*"
