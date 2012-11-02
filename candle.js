@@ -6,6 +6,7 @@ var candle = function() {
     this.callbacks = Object.create(null);
     this.timeouts = Object.create(null);
     this.id = 0;
+    this.timeoutResolver = null;
 };
 candle.prototype.add = function(callback) {
     var id = ++this.id;
@@ -53,7 +54,13 @@ candle.prototype.getTimeout = function(id) {
 };
 candle.prototype.onTimeout = function(id) {
     debug('onTimeout(' + id + ')');
-    this.resolve(id, 'timeout');
+    if (typeof this.timeoutResolver == 'function') {
+      this.timeoutResolver(id);
+    } else {
+      this.resolve(id, 'timeout');
+    }
 };
-
+candle.prototype.setTimeoutResolver = function(callback) {
+    this.timeoutResolver = callback;
+};
 module.exports.candle = candle;
