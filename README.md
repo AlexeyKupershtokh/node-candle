@@ -27,7 +27,8 @@ c.resolve(id, null, 'whoa!');
 
 // output: "callback fired, whoa!"
 ```
-<a href="https://github.com/AlexeyKupershtokh/node-candle/tree/master/examples">more examples</a>
+<a href="https://github.com/AlexeyKupershtokh/node-candle/tree/master/examples">More examples</a>. Also consider `DEBUG=candle node script.js` to better understand how it works.
+
 A network example
 =================
 
