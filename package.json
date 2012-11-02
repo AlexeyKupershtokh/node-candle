@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git://github.com/AlexeyKupershtokh/node-candle.git"
   },
+  "bugs": {
+    "url": "https://github.com/AlexeyKupershtokh/node-candle/issues"
+  },
   "keywords": [
     "callback",
     "flow-control",
@@ -22,7 +25,11 @@
     "debug":"*"
   },
   "devDependencies": {
-    "benchmark": ">0"
+    "benchmark": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
   },
   "author": "Alexey Kupershtokh",
   "license": "BSD"
