@@ -23,10 +23,12 @@
   },
   "devDependencies": {
     "benchmark": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "nodelint": "*"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha",
+    "nodelint": "./node_modules/.bin/nodelint candle.js || true"
   },
   "author": "Alexey Kupershtokh",
   "license": "BSD"
