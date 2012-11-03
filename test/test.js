@@ -45,13 +45,13 @@ describe('candle', function(){
       assert.equal(sum, 7);
     });
   });
-  describe('#delete()', function(){
-    it('should delete callback', function(){
+  describe('#remove()', function(){
+    it('should remove callback', function(){
       var c = new candle;
       var id = c.add(function() {
         assert.fail();
       });
-      c.delete(id);
+      c.remove(id);
       c.resolve(id);
     });
   });
