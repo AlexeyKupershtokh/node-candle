@@ -6,7 +6,9 @@ node-candle is a node.js module that brings a callback broker to your applicatio
  * it assigns ids to callbacks. This allows to create request-response mechanism over any network module easily.
  * it can add timeouts to callbacks.
  * it makes callbacks weakly referenced. And after a callback is resolved or timed out it becomes free and is destroyed during next garbage collection. This feature aims to let you create leak-free applications. This feature is the contrary to <a href="https://github.com/temsa/addTimeout">addTimeout</a> and <a href="https://github.com/coolaj86/futures/tree/v2.0/future">future</a> which can keep callbacks from deletion.
- * it's <a href="https://github.com/AlexeyKupershtokh/node-candle/tree/master/benchmark">blazing fast</a> and can do 300K add+settimeout+resolve iterations per second.
+ * it's <a href="https://github.com/AlexeyKupershtokh/node-candle/tree/master/benchmark">blazing fast</a> and can do:
+  * 1,000,000 `add()`+`resolve()` iterations per second;
+  * 500,000 `add()`+`setTimeout()`+`resolve()` iterations per second.
 
 ![](https://github.com/AlexeyKupershtokh/node-candle/raw/master/assets/candle.png)
 
@@ -78,3 +80,19 @@ got timeout undefined on 102 th ms
 ```
 So we get the response and 2 timeouts right after 100ms passed.
 As far as the r2_response will be returned after timeout it will be completely ignored.
+
+Installation
+============
+
+`npm install node-candle`
+
+Usage
+=====
+
+* `c = new candle` - create a new candle
+* `id = c.add(callback)` - add a callback to the candle. Assigned id is returned.
+* `c.resolve(id, [args, ...])` - resolve a callback identified by id and pass custom args to it.
+* `c.delete(id)` - completely remove the callback.
+* `c.setTimeout(id, timeout)` - add a timeout `timeout` ms to a callback by id.
+* `c.clearTimeout(id)` - remove a timeout from a callback by id.
+* `c.setTimeoutResolver(callback)` - assign a custom candle-wide callback that will be used to resolve on timeout. Default behavior is `function(id) { this.resolve(id, 'timeout'); }`. Sometimes, e.g. when you use the candle with <a href="https://github.com/caolan/async#parallel">async.parallel</a>, you may want to use something like this callback: `function(id) { this.resolve(id, null, { status: 'timeout' }); }` to avoid it look like an error.
