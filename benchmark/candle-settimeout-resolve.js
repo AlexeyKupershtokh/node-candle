@@ -5,7 +5,7 @@ var c = new candle();
 var n = 0;
 
 var next = function() {
-    var ids = [], l = 10000;
+    var ids = [], l = 1000;
     for (var i = 0; i < l; i++) {
         var id = c.add(function(err, result) {
             n++;

@@ -4,7 +4,7 @@ var c = new candle();
 
 var n = 0;
 var next = function() {
-    for (var i = 0; i < 3000; i++) {
+    for (var i = 0; i < 1000; i++) {
         var id = c.add(function(err, result) {
             n++;
         }, 1);
