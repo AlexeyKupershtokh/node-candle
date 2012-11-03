@@ -1,6 +1,6 @@
 {
   "name": "candle",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A module for weak referenced callbacks with timeouts.",
   "main": "candle.js",
   "repository": {
@@ -19,7 +19,7 @@
     "callback broker"
   ],
   "dependencies": {
-    "debug":"*"
+    "debug": "*"
   },
   "devDependencies": {
     "benchmark": "*",
