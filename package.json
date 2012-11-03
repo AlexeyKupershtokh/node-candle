@@ -3,9 +3,6 @@
   "version": "0.2.2",
   "description": "A module for weak referenced callbacks with timeouts.",
   "main": "candle.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/AlexeyKupershtokh/node-candle.git"

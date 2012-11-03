@@ -10,7 +10,7 @@ var next = function() {
         }, 1);
         c.setTimeout(id, 1);
     }
-    setTimeout(next, 1);
+    process.nextTick(next, 1);
 };
 next();
 

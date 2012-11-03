@@ -1,5 +1,3 @@
-"use strict";
-
 var candle = require('..').candle;
 
 var c = new candle();
@@ -7,7 +5,7 @@ var c = new candle();
 var n = 0;
 
 var next = function() {
-    var ids = [], l = 10000;
+    var ids = [], l = 1000;
     for (var i = 0; i < l; i++) {
         var id = c.add(function(err, result) {
             n++;
@@ -17,7 +15,7 @@ var next = function() {
     for (var i = 0; i < l; i++) {
         c.resolve(ids[i], null, 'result');
     }
-    setTimeout(next, 1);
+    process.nextTick(next);
 };
 next();
 
