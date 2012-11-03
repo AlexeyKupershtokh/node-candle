@@ -95,4 +95,16 @@ describe('candle', function(){
       }, 10);
     });
   });
+  describe('#setTimeoutResolver()', function(){
+    it('should then resolve callbacks', function(done){
+      var c = new candle;
+      var id = c.add(function(err, response) {
+        assert.equal(err, null);
+        assert.deepEqual(response, { error: true });
+        done();
+      });
+      c.setTimeoutResolver(function(id) { this.resolve(id, null, { error: true }); });
+      c.setTimeout(id, 1);
+    });
+  });
 });
