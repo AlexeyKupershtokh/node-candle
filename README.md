@@ -97,7 +97,13 @@ Usage
 * `c.setTimeoutResolver(callback)` - assign a custom candle-wide callback that will be used to resolve on timeout. Default behavior is `function(id) { this.resolve(id, 'timeout'); }`. Sometimes, e.g. when you use the candle with <a href="https://github.com/caolan/async#parallel">async.parallel</a>, you may want to use something like this callback: `function(id) { this.resolve(id, null, { status: 'timeout' }); }` to avoid it look like an error.
 
 Running tests
-=============
+==========================
 `npm test`
 
-don't forget to run `npm install candle --dev` or `npm install` ( if you git clone candle )
+NB: don't forget to run `npm install` from the candle module directory or install it with `npm install candle --dev` to install test framework
+
+Running benchmarks
+==========================
+`node benchmark/...`
+
+NB: don't forget to run `npm install` from the candle module directory or install it with `npm install candle --dev` to install benchmark framework
