@@ -91,7 +91,7 @@ Usage
 * `c = new candle` - create a new candle
 * `id = c.add(callback)` - add a callback to the candle. Assigned id is returned.
 * `c.resolve(id, [args, ...])` - resolve a callback identified by id and pass custom args to it.
-* `c.delete(id)` - completely remove the callback.
+* `c.remove(id)` - completely remove the callback.
 * `c.setTimeout(id, timeout)` - add a timeout `timeout` ms to a callback by id.
 * `c.clearTimeout(id)` - remove a timeout from a callback by id.
 * `c.setTimeoutResolver(callback)` - assign a custom candle-wide callback that will be used to resolve on timeout. Default behavior is `function(id) { this.resolve(id, 'timeout'); }`. Sometimes, e.g. when you use the candle with <a href="https://github.com/caolan/async#parallel">async.parallel</a>, you may want to use something like this callback: `function(id) { this.resolve(id, null, { status: 'timeout' }); }` to avoid it look like an error.
