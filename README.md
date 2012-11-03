@@ -83,8 +83,7 @@ As far as the r2_response will be returned after timeout it will be completely i
 
 Installation
 ============
-
-`npm install node-candle`
+`npm install candle`
 
 Usage
 =====
@@ -96,3 +95,9 @@ Usage
 * `c.setTimeout(id, timeout)` - add a timeout `timeout` ms to a callback by id.
 * `c.clearTimeout(id)` - remove a timeout from a callback by id.
 * `c.setTimeoutResolver(callback)` - assign a custom candle-wide callback that will be used to resolve on timeout. Default behavior is `function(id) { this.resolve(id, 'timeout'); }`. Sometimes, e.g. when you use the candle with <a href="https://github.com/caolan/async#parallel">async.parallel</a>, you may want to use something like this callback: `function(id) { this.resolve(id, null, { status: 'timeout' }); }` to avoid it look like an error.
+
+Running tests
+=============
+`npm test`
+
+don't forget to run `npm install candle --dev` or `npm install` ( if you git clone candle )
