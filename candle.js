@@ -3,20 +3,20 @@ var timers = require('./timers.js');
 //var timers = require('timers');
 
 var debug = require('debug')('candle');
-var candle = function () {
+var Candle = function () {
     "use strict";
     this.callbacks = Object.create(null);
     this.id = 0;
     this.timeoutResolver = null;
 };
-candle.prototype.add = function (callback) {
+Candle.prototype.add = function (callback) {
     "use strict";
     var id = ++this.id;
     debug('add(...), assigned id = ' + id);
     this.callbacks[id] = [callback, null];
     return id;
 };
-candle.prototype.resolve = function (id, err, result) {
+Candle.prototype.resolve = function (id, err, result) {
     "use strict";
     debug('resolve(' + id + ', ...)');
     var l = arguments.length, callback = this.callbacks[id], i, args;
@@ -35,20 +35,20 @@ candle.prototype.resolve = function (id, err, result) {
         }
     }
 };
-candle.prototype.remove = function (id) {
+Candle.prototype.remove = function (id) {
     "use strict";
     debug('remove(' + id + ')');
     this.clearTimeout(id);
     delete this.callbacks[id];
 };
-candle.prototype.setTimeout = function (id, timeout) {
+Candle.prototype.setTimeout = function (id, timeout) {
     "use strict";
     debug('setTimeout(' + id + ')');
     if (!this.callbacks[id]) { return; }
     this.clearTimeout(id);
     this.callbacks[id][1] = timers.setTimeout(this.getTimeout(id), timeout);
 };
-candle.prototype.clearTimeout = function (id) {
+Candle.prototype.clearTimeout = function (id) {
     "use strict";
     debug('clearTimeout(' + id + ')');
     if (this.callbacks[id] && this.callbacks[id][1]) {
@@ -56,12 +56,12 @@ candle.prototype.clearTimeout = function (id) {
     }
     this.callbacks[id][1] = null;
 };
-candle.prototype.getTimeout = function (id) {
+Candle.prototype.getTimeout = function (id) {
     "use strict";
     var self = this;
     return function () { return self.onTimeout(id); };
 };
-candle.prototype.onTimeout = function (id) {
+Candle.prototype.onTimeout = function (id) {
     "use strict";
     debug('onTimeout(' + id + ')');
     if (typeof this.timeoutResolver === 'function') {
@@ -70,8 +70,8 @@ candle.prototype.onTimeout = function (id) {
         this.resolve(id, 'timeout');
     }
 };
-candle.prototype.setTimeoutResolver = function (callback) {
+Candle.prototype.setTimeoutResolver = function (callback) {
     "use strict";
     this.timeoutResolver = callback;
 };
-module.exports.candle = candle;
+module.exports.candle = Candle;
