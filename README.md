@@ -16,10 +16,10 @@ A simple example
 ================
 
 ```javascript
-var candle = require('candle').candle;
+var Candle = require('candle').Candle;
 
 // Create a new candle, usually you will need only one since it can handle many callbacks.
-var c = new candle();
+var c = new Candle();
 
 // Add a callback to it
 var id = c.add(function(err, response) { console.log('callback fired,', response); })
@@ -50,9 +50,9 @@ socket.on('myrequest', function(payload, id) {
 ```
 So we would like to send the requests to the Server2 and wait for responses for at most 100ms.
 ```javascript
-var candle = require('candle').candle;
+var Candle = require('candle').Candle;
 
-var c = new candle();
+var c = new Candle();
 
 var start = Date.now();
 socket.on('myresponse', function(id, response) {
@@ -88,7 +88,7 @@ Installation
 Usage
 =====
 
-* `c = new candle` - create a new candle
+* `c = new Candle` - create a new candle
 * `id = c.add(callback)` - add a callback to the candle. Assigned id is returned.
 * `c.resolve(id, [args, ...])` - resolve a callback identified by id and pass custom args to it.
 * `c.remove(id)` - completely remove the callback.

@@ -1,7 +1,7 @@
-var candle = require('..').candle;
+var Candle = require('..').Candle;
 
 // Create a new candle, usually you will need only one since it can handle many callbacks.
-var c = new candle();
+var c = new Candle();
 
 // Usually on timeout it calls callback with an arguments 'error'.
 // But we set a custom timeout resolver in this case.

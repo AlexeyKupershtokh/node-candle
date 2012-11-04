@@ -3,6 +3,9 @@ var timers = require('./timers.js');
 //var timers = require('timers');
 
 var debug = require('debug')('candle');
+
+var TimeoutError = function () {};
+
 var Candle = function () {
     "use strict";
     this.callbacks = Object.create(null);
@@ -67,11 +70,21 @@ Candle.prototype.onTimeout = function (id) {
     if (typeof this.timeoutResolver === 'function') {
         this.timeoutResolver(id);
     } else {
-        this.resolve(id, 'timeout');
+        this.resolve(id, new TimeoutError());
     }
 };
 Candle.prototype.setTimeoutResolver = function (callback) {
     "use strict";
     this.timeoutResolver = callback;
 };
-module.exports.candle = Candle;
+Candle.prototype.isTimeoutError = function (obj) {
+    "use strict";
+    return obj instanceof TimeoutError;
+};
+module.exports.Candle = Candle;
+
+var create = function () {
+    "use strict";
+    return new Candle();
+};
+module.exports.create = create;

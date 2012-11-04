@@ -1,6 +1,6 @@
-var candle = require('..').candle;
+var Candle = require('..').Candle;
 
-var c = new candle();
+var c = new Candle();
 
 var n = 0;
 var next = function() {

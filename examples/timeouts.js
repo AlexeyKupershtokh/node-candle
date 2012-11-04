@@ -1,6 +1,6 @@
-var candle = require('..').candle;
+var Candle = require('..').Candle;
 
-var c = new candle(), id;
+var c = new Candle(), id;
 
 id = c.add(function(err, result) { console.log('cb1', err, result); });
 c.setTimeout(id, 100);

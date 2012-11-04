@@ -14,13 +14,13 @@ socket.on('myrequest', function(id, payload) {
 });
 
 // server1
-var candle = require('..').candle;
-var c = new candle();
+var Candle = require('..').Candle;
+var c = new Candle();
 var start = Date.now();
 socket.on('myresponse', function(id, response) {
   c.resolve(id, null, response);
 });
-function distributed_request(requests, gather) {
+function distributed_request (requests, gather) {
   var responses = [];
   for (var i in requests) {
     var id = c.add(function(err, response) {
@@ -33,7 +33,7 @@ function distributed_request(requests, gather) {
     socket.emit('myrequest', id, requests[i]);
   }
 }
-var handle_responses = function(responses) {
+function handle_responses (responses) {
   console.log('got', responses, 'on', (Date.now() - start) + 'th ms');
 }
 distributed_request(['r1', 'r2', 'r3'], handle_responses);

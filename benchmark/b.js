@@ -1,11 +1,10 @@
 var Benchmark = require('benchmark').Benchmark;
 var suite = new Benchmark.Suite;
-candle = require('..').candle;
+Candle = require('..').Candle;
 
 //function noop() {};
-noop = function() {};
-
-var setup = function() { var c = new candle; };
+noop = function() {}
+var setup = function() { var c = new Candle; };
 var teardown = function() { console.log(c.id, Object.keys(c.callbacks).length); };
 var options = {
   setup: setup,
@@ -22,7 +21,7 @@ suite
   c.resolve(id);
 }, options)
 .add('1000*add + 1000*resolve', function() {
-  var c = new candle;
+  var c = new Candle;
   var ids = new Array(1000);
   for (var i = 0; i < 1000; i++) {
     var id = c.add(noop);
@@ -33,7 +32,7 @@ suite
   }
 })
 .add('1000*add + 1000*resolve(1)', function() {
-  var c = new candle;
+  var c = new Candle;
   var ids = new Array(1000);
   for (var i = 0; i < 1000; i++) {
     var id = c.add(noop);
@@ -44,7 +43,7 @@ suite
   }
 })
 .add('1000*add + 1000*resolve(1, 2)', function() {
-  var c = new candle;
+  var c = new Candle;
   var ids = new Array(1000);
   for (var i = 0; i < 1000; i++) {
     var id = c.add(noop);
@@ -55,7 +54,7 @@ suite
   }
 })
 .add('1000*add + 1000*resolve(1, 2, 3, 4, 5)', function() {
-  var c = new candle;
+  var c = new Candle;
   var ids = new Array(1000);
   for (var i = 0; i < 1000; i++) {
     var id = c.add(noop);
@@ -71,7 +70,7 @@ suite
   c.resolve(id);
 }, options)
 .add('1000*add + 1000*setTimeout + 1000*resolve', function() {
-  var c = new candle;
+  var c = new Candle;
   var ids = new Array(1000);
   for (var i = 0; i < 1000; i++) {
     var id = c.add(noop);
@@ -85,7 +84,7 @@ suite
   }
 })
 .add('1000*(add + setTimeout) + 1000*timeout', function(deferred) {
-  var c = new candle;
+  var c = new Candle;
   var n = 0;
   var ITERATIONS = 1000;
   for (var i = 0; i < ITERATIONS; i++) {

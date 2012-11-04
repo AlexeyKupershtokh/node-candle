@@ -1,7 +1,7 @@
-var candle = require('..').candle;
+var Candle = require('..').Candle;
 
 // Create a new candle, usually you will need only one since it can handle many callbacks.
-var c = new candle();
+var c = new Candle();
 
 // Add a callback to it
 var id = c.add(function(err, response) { console.log('callback fired,', err, response); })

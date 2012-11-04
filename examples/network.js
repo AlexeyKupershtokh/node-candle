@@ -14,8 +14,8 @@ socket.on('myrequest', function(id, payload) {
 });
 
 // server1
-var candle = require('..').candle;
-var c = new candle();
+var Candle = require('..').Candle;
+var c = new Candle();
 var start = Date.now();
 socket.on('myresponse', function(id, response) {
   c.resolve(id, null, response);
