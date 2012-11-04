@@ -20,16 +20,20 @@ var start = Date.now();
 socket.on('myresponse', function(id, response) {
   c.resolve(id, null, response);
 });
-var doSmthWithRequest = function(err, request) {
-  console.log('got', err, request, 'on', (Date.now() - start) + 'th ms');
-};
-var id;
-id = c.add(doSmthWithRequest);
-c.setTimeout(id, 100);
-socket.emit('myrequest', id, 'r1');
-id = c.add(doSmthWithRequest);
-c.setTimeout(id, 100);
-socket.emit('myrequest', id, 'r2');
-id = c.add(doSmthWithRequest);
-c.setTimeout(id, 100);
-socket.emit('myrequest', id, 'r3');
+function distributed_request(requests, gather) {
+  var responses = [];
+  for (var i in requests) {
+    var id = c.add(function(err, response) {
+      responses.push(response);
+      if (responses.length == requests.length) {
+        gather(responses);
+      }
+    });
+    c.setTimeout(id, 100);
+    socket.emit('myrequest', id, requests[i]);
+  }
+}
+var handle_responses = function(responses) {
+  console.log('got', responses, 'on', (Date.now() - start) + 'th ms');
+}
+distributed_request(['r1', 'r2', 'r3'], handle_responses);
