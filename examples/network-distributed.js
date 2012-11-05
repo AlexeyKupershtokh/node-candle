@@ -71,3 +71,4 @@ function handle_responses (responses) {
 }
 distributed_request(['r1', 'r2', 'r3', 'r4', 'r5'], handle_responses);
 distributed_request(['r1', 'r2'], handle_responses);
+distributed_request(['r1', 'r4'], handle_responses);
