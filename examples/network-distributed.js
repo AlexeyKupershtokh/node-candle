@@ -70,3 +70,4 @@ function handle_responses (responses) {
   console.log('got', responses, 'on', (Date.now() - start) + 'th ms');
 }
 distributed_request(['r1', 'r2', 'r3', 'r4', 'r5'], handle_responses);
+distributed_request(['r1', 'r2'], handle_responses);
