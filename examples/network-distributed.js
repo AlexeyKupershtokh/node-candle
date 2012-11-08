@@ -24,7 +24,7 @@ for (var i = 2; i < 5; i++) {
 }
 
 // server1
-var Candle = require('..').Candle;
+var Candle = require('..');
 var c = new Candle();
 var start = Date.now();
 for (var i in sockets) {

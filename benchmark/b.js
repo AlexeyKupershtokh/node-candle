@@ -1,6 +1,6 @@
 var Benchmark = require('benchmark').Benchmark;
 var suite = new Benchmark.Suite;
-Candle = require('..').Candle;
+Candle = require('..');
 
 //function noop() {};
 noop = function() {}

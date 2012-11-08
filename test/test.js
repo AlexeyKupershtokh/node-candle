@@ -1,5 +1,5 @@
 var assert = require("assert")
-var Candle = require('..').Candle;
+var Candle = require('..');
 
 describe('candle', function(){
   describe('#add()', function(){
@@ -59,7 +59,7 @@ describe('candle', function(){
     it('should resolve callback', function(done){
       var c = new Candle;
       var id = c.add(function(err) {
-        assert.ok(c.isTimeoutError(err));
+        assert.ok(err instanceof Candle.Timeout);
         done();
       });
       c.setTimeout(id, 1);
@@ -96,7 +96,7 @@ describe('candle', function(){
     });
   });
   describe('#setTimeoutResolver()', function(){
-    it('should then resolve callbacks', function(done){
+    it('should be used for resolving callbacks', function(done){
       var c = new Candle;
       var id = c.add(function(err, response) {
         assert.equal(err, null);
@@ -104,6 +104,25 @@ describe('candle', function(){
         done();
       });
       c.setTimeoutResolver(function(id) { this.resolve(id, null, { error: true }); });
+      c.setTimeout(id, 1);
+    });
+    it('should allow using Candle.Timeout', function(done){
+      var c = new Candle;
+      var id = c.add(function(err, response) {
+        assert.ok(err instanceof Candle.Timeout);
+        done();
+      });
+      c.setTimeoutResolver(function(id) { this.resolve(id, new Candle.Timeout()); });
+      c.setTimeout(id, 1);
+    });
+    it('should allow using Candle.TimeoutError', function(done){
+      var c = new Candle;
+      var id = c.add(function(err, response) {
+        assert.ok(err instanceof Candle.TimeoutError);
+        assert.ok(err instanceof Error);
+        done();
+      });
+      c.setTimeoutResolver(function(id) { this.resolve(id, new Candle.TimeoutError()); });
       c.setTimeout(id, 1);
     });
   });

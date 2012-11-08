@@ -1,4 +1,4 @@
-var Candle = require('..').Candle;
+var Candle = require('..');
 
 // Create a new candle, usually you will need only one since it can handle many callbacks.
 var c = new Candle();

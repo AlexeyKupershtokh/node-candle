@@ -16,19 +16,19 @@ A simple example
 ================
 
 ```javascript
-var Candle = require('candle').Candle;
+var Candle = require('candle');
 
 // Create a new candle, usually you will need only one since it can handle many callbacks.
 var c = new Candle();
 
 // Add a callback to it
-var id = c.add(function(err, response) { console.log('callback fired,', response); })
+var id = c.add(function(err, response) { console.log('callback fired,', !!err, response); })
 
 // You can pass these ids over network and catch back along it with a response.
 // When you're ready just resolve the callback using these ids:
 c.resolve(id, null, 'whoa!');
 
-// output: "callback fired, whoa!"
+// output: "callback fired, false whoa!"
 ```
 <a href="https://github.com/AlexeyKupershtokh/node-candle/tree/master/examples">More examples</a>. Also consider `DEBUG=candle node script.js` to better understand how it works.
 
@@ -50,7 +50,7 @@ socket.on('myrequest', function(payload, id) {
 ```
 So we would like to send the requests to the Server2 and wait for responses for at most 100ms.
 ```javascript
-var Candle = require('candle').Candle;
+var Candle = require('candle');
 
 var c = new Candle();
 
@@ -59,7 +59,7 @@ socket.on('myresponse', function(id, response) {
   c.resolve(id, null, response);
 });
 var doSmthWithRequest = function(err, request) {
-  console.log('got', err, request, 'on', Date.now() - start, 'th ms');
+  console.log('got', !!err, request, 'on', Date.now() - start, 'th ms');
 };
 var id;
 id = c.add(doSmthWithRequest);
@@ -74,9 +74,9 @@ socket.emit('myrequest', 'r3', id);
 ```
 This code will likely output the following:
 ```
-got null r1_response on 13 th ms
-got timeout undefined on 102 th ms
-got timeout undefined on 102 th ms
+got false r1_response on 13 th ms
+got true undefined on 102 th ms
+got true undefined on 102 th ms
 ```
 So we get the response and 2 timeouts right after 100ms passed.
 As far as the r2_response will be returned after timeout it will be completely ignored.
@@ -94,8 +94,7 @@ Usage
 * `c.remove(id)` - completely remove the callback.
 * `c.setTimeout(id, timeout)` - add a timeout `timeout` ms to a callback by id.
 * `c.clearTimeout(id)` - remove a timeout from a callback by id.
-* `c.isTimeoutError(err)` - check if an error is instance of candle's TimeoutError class.
-* `c.setTimeoutResolver(callback)` - assign a custom candle-wide callback that will be used to resolve on timeout. Default behavior is `function(id) { this.resolve(id, new TimeoutError()); }`. Sometimes, e.g. when you use the candle with <a href="https://github.com/caolan/async#parallel">async.parallel</a>, you may want to use something like this callback: `function(id) { this.resolve(id, null, { status: 'timeout' }); }` to avoid it look like an error.
+* `c.setTimeoutResolver(callback)` - assign a custom candle-wide callback that will be used to resolve on timeout. Default behavior is `function(id) { this.resolve(id, new Timeout()); }`. Sometimes, e.g. when you use the candle with <a href="https://github.com/caolan/async#parallel">async.parallel</a>, you may want to use something like this callback: `function(id) { this.resolve(id, null, { status: 'timeout' }); }` to avoid it look like an error.
 
 Running tests
 ==========================

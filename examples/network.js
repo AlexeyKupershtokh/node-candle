@@ -14,14 +14,14 @@ socket.on('myrequest', function(id, payload) {
 });
 
 // server1
-var Candle = require('..').Candle;
+var Candle = require('..');
 var c = new Candle();
 var start = Date.now();
 socket.on('myresponse', function(id, response) {
   c.resolve(id, null, response);
 });
 var doSmthWithRequest = function(err, request) {
-  console.log('got', err, request, 'on', (Date.now() - start) + 'th ms');
+  console.log('got', !!err, request, 'on', (Date.now() - start) + 'th ms');
 };
 var id;
 id = c.add(doSmthWithRequest);

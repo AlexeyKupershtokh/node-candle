@@ -1,10 +1,10 @@
-var Candle = require('..').Candle;
+var Candle = require('..');
 
 // Create a new candle, usually you will need only one since it can handle many callbacks.
 var c = new Candle();
 
 // Add a callback to it
-var id = c.add(function(err, response) { console.log('callback fired,', response); })
+var id = c.add(function(err, response) { console.log('callback fired,', !!err, response); })
 
 // You can pass these ids over network and catch back along it with a response.
 // When you're ready just resolve the callback using these ids:
