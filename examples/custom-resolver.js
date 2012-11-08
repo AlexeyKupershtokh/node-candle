@@ -6,10 +6,10 @@ var c = new Candle();
 // Usually on timeout it calls callback with an arguments 'error'.
 // But we set a custom timeout resolver in this case.
 // This can be useful for integrating with the async module.
-c.setTimeoutResolver(function(id) { this.resolve(id, null, { timeout: true }); })
+c.setTimeoutResolver(function (id) { this.resolve(id, null, { timeout: true }); });
 
 // Add a callback to it
-var id = c.add(function(err, response) { console.log('callback fired,', err, response); })
+var id = c.add(function (err, response) { console.log('callback fired,', err, response); });
 
 c.setTimeout(id, 1000);
 

@@ -4,7 +4,7 @@ var Candle = require('..');
 var c = new Candle();
 
 // Add a callback to it
-var id = c.add(function(err, response) { console.log('callback fired,', !!err, response); })
+var id = c.add(function (err, response) { console.log('callback fired,', !!err, response); });
 
 c.setTimeout(id, 1000);
 

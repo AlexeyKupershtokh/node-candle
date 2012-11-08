@@ -1,14 +1,17 @@
 // socket imitation compatible with socket.io :)
-var socket = new (require('events').EventEmitter);
+var EventEmitter = require('events').EventEmitter,
+  socket = new EventEmitter();
 
 // server2
-socket.on('myrequest', function(id, payload) {
+socket.on('myrequest', function (id, payload) {
   // dont send anything at all about 'r3'
-  if (payload == 'r3') return;
+  if (payload === 'r3') {
+    return;
+  }
 
   // send response after 10ms for 'r1', but after 1000ms for 'r2'.
-  var timeout = (payload == 'r1') ? 10 : 1000;
-  setTimeout(function() {
+  var timeout = (payload === 'r1') ? 10 : 1000;
+  setTimeout(function () {
     socket.emit('myresponse', id, payload + '_response');
   }, timeout);
 });
@@ -17,10 +20,10 @@ socket.on('myrequest', function(id, payload) {
 var Candle = require('..');
 var c = new Candle();
 var start = Date.now();
-socket.on('myresponse', function(id, response) {
+socket.on('myresponse', function (id, response) {
   c.resolve(id, null, response);
 });
-var doSmthWithRequest = function(err, request) {
+var doSmthWithRequest = function (err, request) {
   console.log('got', !!err, request, 'on', (Date.now() - start) + 'th ms');
 };
 var id;
