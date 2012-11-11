@@ -7,13 +7,6 @@ addTimeout = require('addTimeout');
 
 //function noop() {};
 noop = function() {};
-var setup = function() { var c = new Candle; };
-var teardown = function() { console.log(c.id, Object.keys(c.callbacks).length); };
-var options = {
-  setup: setup,
-  //teardown: teardown,
-  //onComplete: function () { console.log(this.compiled.toString()); }
-};
 
 var ITERATIONS = 1000;
 var context = {};
