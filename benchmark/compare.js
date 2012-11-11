@@ -22,7 +22,7 @@ suite
 .add('warmup', function() {
   var d = Date.now();
 })
-.add('candle: 1000*add + 1000*resolve', function() {
+.add('candle:     1000*add + 1000*resolve', function() {
   var a = [], c = new Candle, i;
   for (i = 0; i < 1000; i++) {
     a.push(c.add(noop))
@@ -31,7 +31,7 @@ suite
     c.resolve(a[i]);
   }
 })
-.add('cb:     1000*add + 1000*resolve', function() {
+.add('cb:         1000*add + 1000*resolve', function() {
   var a = [], i;
   for (i = 0; i < 1000; i++) {
     a.push(cb(noop).once());
@@ -40,7 +40,7 @@ suite
     a[i]();
   }
 })
-.add('future: 1000*add + 1000*resolve', function() {
+.add('future:     1000*add + 1000*resolve', function() {
   var a = [], i;
   for (i = 0; i < 1000; i++) {
     a.push(Future({}).when(noop));
@@ -49,7 +49,7 @@ suite
     a[i].fulfill();
   }
 })
-.add('candle: 1000*add + 1000*setTimeout + 1000*resolve', function() {
+.add('candle:     1000*add + 1000*setTimeout + 1000*resolve', function() {
   var a = [], c = new Candle, i;
   for (i = 0; i < 1000; i++) {
     a.push(c.add(noop))
@@ -61,7 +61,7 @@ suite
     c.resolve(a[i]);
   }
 })
-.add('cb:     1000*add + 1000*setTimeout + 1000*resolve', function() {
+.add('cb:         1000*add + 1000*setTimeout + 1000*resolve', function() {
   var a = [], i;
   for (i = 0; i < 1000; i++) {
     a.push(cb(noop).once());
@@ -73,7 +73,7 @@ suite
     a[i]();
   }
 })
-.add('future: 1000*add + 1000*setTimeout + 1000*resolve', function() {
+.add('future:     1000*add + 1000*setTimeout + 1000*resolve', function() {
   var a = [], i;
   for (i = 0; i < 1000; i++) {
     a.push(Future({}).when(noop));
@@ -88,7 +88,16 @@ suite
     a[i].fulfill();
   }
 })
-.add('candle: 1000*(add + setTimeout) + 1000*timeout', function(deferred) {
+.add('addTimeout: 1000*add + 1000*setTimeout + 1000*resolve', function() {
+  var a = [], i;
+  for (i = 0; i < 1000; i++) {
+    a.push(addTimeout(1, noop));
+  }
+  for (i = 0; i < 1000; i++) {
+    a[i]();
+  }
+})
+.add('candle:     1000*(add + setTimeout) + 1000*timeout', function(deferred) {
   var c = new Candle, n = 0, i, em;
   for (i = 0; i < ITERATIONS; i++) {
     em = c.add(function() {
@@ -98,7 +107,7 @@ suite
     c.setTimeout(em, 1);
   }
 }, { defer: true })
-.add('cb:     1000*(add + setTimeout) + 1000*timeout', function(deferred) {
+.add('cb:         1000*(add + setTimeout) + 1000*timeout', function(deferred) {
   var n = 0, i, em;
   for (i = 0; i < ITERATIONS; i++) {
     em = cb(function() {
@@ -109,7 +118,7 @@ suite
     em.timeout(1);
   }
 }, { defer: true })
-.add('future: 1000*(add + setTimeout) + 1000*timeout', function(deferred) {
+.add('future:     1000*(add + setTimeout) + 1000*timeout', function(deferred) {
   var n = 0, i, em;
   for (i = 0; i < ITERATIONS; i++) {
     em = Future({}).when(function() {
@@ -117,6 +126,15 @@ suite
       if (n == ITERATIONS) deferred.resolve();
     });
     em.setTimeout(1);
+  }
+}, { defer: true })
+.add('addTimeout: 1000*(add + setTimeout) + 1000*timeout', function(deferred) {
+  var n = 0, i, em;
+  for (i = 0; i < ITERATIONS; i++) {
+    addTimeout(1, function() {
+      n++;
+      if (n == ITERATIONS) deferred.resolve();
+    });
   }
 }, { defer: true })
 // add listeners
