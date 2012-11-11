@@ -126,8 +126,8 @@ var unenroll = exports.unenroll = function(item) {
   debug('unenroll');
   if (list && L.isEmpty(list)) {
     debug('unenroll: list empty');
-    list.close();
-    delete lists[item._idleTimeout];
+    //list.close();
+    //delete lists[item._idleTimeout];
   }
   // if active is called later, then we want to make sure not to insert again
   item._idleTimeout = -1;
