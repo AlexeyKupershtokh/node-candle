@@ -32,7 +32,7 @@ suite
   for (i = 0; i < 1000; i++) {
     a[i]();
   }
-})
+}, { async: true })
 .add('future:     1000*add + 1000*resolve', function() {
   var a = [], i;
   for (i = 0; i < 1000; i++) {
@@ -65,7 +65,7 @@ suite
   for (i = 0; i < 1000; i++) {
     a[i]();
   }
-})
+}, { async: true })
 .add('future:     1000*add + 1000*setTimeout + 1000*resolve', function() {
   var a = [], i;
   for (i = 0; i < 1000; i++) {
@@ -89,7 +89,7 @@ suite
   for (i = 0; i < 1000; i++) {
     a[i]();
   }
-})
+}, { async: true })
 .add('candle:     1000*(add + setTimeout) + 1000*timeout', function(deferred) {
   var c = new Candle, n = 0, i, em;
   for (i = 0; i < ITERATIONS; i++) {
@@ -132,7 +132,9 @@ suite
 }, { defer: true })
 // add listeners
 .on('cycle', function(event) {
-  console.log(String(event.target));
+  if (typeof gc === 'function') gc();
+  var mem = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + 'Mb';
+  console.log(String(event.target), mem);
 })
 .on('error', function(event) {
   console.log(event.target.error);
