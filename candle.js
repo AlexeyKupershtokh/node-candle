@@ -1,7 +1,6 @@
 "use strict";
 
-//var timers = require('timers');
-var timers = require('./timers.js'); // use optimized version of node's timers.js
+var timers = require('timers');
 var util = require('util');
 var debug = require('debug')('candle');
 
